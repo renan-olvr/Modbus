@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "modbus_master",
-    "project_version":    "1",
+    "project_version":    "b8daffa-dirty",
     "project_path":       "/home/renan/RS485/Modbus/mb_master",
     "idf_path":           "/home/renan/ESP_IDF/esp/v5.2/esp-idf",
     "build_dir":          "/home/renan/RS485/Modbus/mb_master/build",
@@ -11,7 +11,7 @@
     "app_elf":            "modbus_master.elf",
     "app_bin":            "modbus_master.bin",
     "build_type":         "flash_app",
-    "git_revision":       "v5.2.3-481-g72c8dffe13",
+    "git_revision":       "v5.2.3-481-g72c8dffe13-dirty",
     "target":             "esp32",
     "rev":                "0",
     "min_rev":            "0",

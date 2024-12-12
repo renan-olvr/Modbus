@@ -75,7 +75,7 @@ enum {
 const mb_parameter_descriptor_t device_parameters[] = {
     // { CID, Param Name, Units, Modbus Slave Addr, Modbus Reg Type, Reg Start, Reg Size, Instance Offset, Data Type, Data Size, Parameter Options, Access Mode}
     { CID_HOLD_DATA_0, STR("Humidity_1"), STR("%rH"), MB_DEVICE_ADDR1, MB_PARAM_HOLDING, 0, 2,
-            HOLD_OFFSET(holding_data0), PARAM_TYPE_FLOAT, 4, OPTS( 0, 1000, 1 ), PAR_PERMS_READ_WRITE_TRIGGER }
+            HOLD_OFFSET(holding_data0), PARAM_TYPE_U16, 2, OPTS( 0, 1000, 1 ), PAR_PERMS_READ_WRITE_TRIGGER }
 };
 
 // Calculate number of parameters in the table
@@ -178,13 +178,13 @@ static void master_operation_func(void *arg)
                     if (err == ESP_OK) {
                         if ((param_descriptor->mb_param_type == MB_PARAM_HOLDING) ||
                             (param_descriptor->mb_param_type == MB_PARAM_INPUT)) {
-                            value = *(float*)temp_data_ptr;
-                            ESP_LOGI(TAG, "Characteristic #%u %s (%s) value = %f (0x%" PRIx32 ") read successful.",
+                            value = *(uint16_t*)temp_data_ptr;
+                            ESP_LOGI(TAG, "Characteristic #%u %s (%s) value = %f (0x%" PRIx16 ") read successful.",
                                             param_descriptor->cid,
                                             param_descriptor->param_key,
                                             param_descriptor->param_units,
                                             value,
-                                            *(uint32_t*)temp_data_ptr);
+                                            *(uint16_t*)temp_data_ptr);
                             if (((value > param_descriptor->param_opts.max) ||
                                 (value < param_descriptor->param_opts.min))) {
                                     alarm_state = true;

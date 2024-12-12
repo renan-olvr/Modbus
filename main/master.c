@@ -80,7 +80,7 @@ const mb_parameter_descriptor_t device_parameters[] = {
             HOLD_OFFSET(humidity), PARAM_TYPE_U16, 2, OPTS( 0, 1000, 1 ), PAR_PERMS_READ_WRITE_TRIGGER },
     { CID_HOLD_PRESSURE, STR("Pressure"), STR("hPa"), MB_DEVICE_ADDR, MB_PARAM_HOLDING, 2, 1,
             HOLD_OFFSET(pressure), PARAM_TYPE_U16, 2, OPTS( 0, 100000, 1 ), PAR_PERMS_READ_WRITE_TRIGGER },
-    { CID_HOLD_ILLUMINANCE, STR("Illuminance"), STR("%FS"), MB_DEVICE_ADDR, MB_PARAM_HOLDING, 3, 1,
+    { CID_HOLD_ILLUMINANCE, STR("Illuminance"), STR("FS"), MB_DEVICE_ADDR, MB_PARAM_HOLDING, 3, 1,
             HOLD_OFFSET(illuminance), PARAM_TYPE_U16, 2, OPTS( 0, 100000, 1 ), PAR_PERMS_READ_WRITE_TRIGGER }
 };
 

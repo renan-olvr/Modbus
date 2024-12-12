@@ -21812,7 +21812,7 @@ LOAD /home/renan/ESP_IDF/ESP-IDF/.espressif/tools/xtensa-esp-elf/esp-13.2.0_2023
  .rodata.__func__$3
                 0x3f40b77c        0x9 esp-idf/main/libmain.a(master.c.obj)
  .rodata.str1.4
-                0x3f40b785       0x40 esp-idf/main/libmain.a(master.c.obj)
+                0x3f40b785       0x3f esp-idf/main/libmain.a(master.c.obj)
  *fill*         0x3f40b785        0x3 
  .rodata.device_parameters
                 0x3f40b788       0xd0 esp-idf/main/libmain.a(master.c.obj)

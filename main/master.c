@@ -184,7 +184,7 @@ static void master_operation_func(void *arg)
                     if (err == ESP_OK) {
                         if ((param_descriptor->mb_param_type == MB_PARAM_HOLDING) ||
                             (param_descriptor->mb_param_type == MB_PARAM_INPUT)) {
-                            value = *(uint32_t*)temp_data_ptr;
+                            value = *(uint16_t*)temp_data_ptr;
                             ESP_LOGI(TAG, "Characteristic #%u %s (%s) value = %f read successful.",
                                             param_descriptor->cid,
                                             param_descriptor->param_key,

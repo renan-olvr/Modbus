@@ -20,7 +20,7 @@
 #define MASTER_MAX_CIDS num_device_parameters
 
 // Number of reading of parameters from slave
-#define MASTER_MAX_RETRY 1
+#define MASTER_MAX_RETRY 0
 
 // Timeout to update cid over Modbus
 #define UPDATE_CIDS_TIMEOUT_MS          (500)
@@ -45,15 +45,15 @@ static const char *TAG = "MASTER_TEST";
 
 // Enumeration of modbus device addresses accessed by master device
 enum {
-    MB_DEVICE_ADDR1 = 8 // Only one slave device used for the test (add other slave addresses here)
+    MB_DEVICE_ADDR = 8 // Only one slave device used for the test (add other slave addresses here)
 };
 
 // Enumeration of all supported CIDs for device (used in parameter definition table)
 enum {
-    CID_HOLD_DATA_0 = 0,
-    CID_HOLD_DATA_1,
-    CID_HOLD_DATA_2,
-    CID_INP_DATA_0,
+    CID_HOLD_TEMPERATURE = 0,
+    CID_HOLD_HUMIDITY,
+    CID_HOLD_PRESSURE,
+    CID_HOLD_ILLUMINANCE,
     CID_INP_DATA_1,
     CID_INP_DATA_2,
     CID_HOLD_TEST_REG,
@@ -74,8 +74,14 @@ enum {
 // Access Mode - can be used to implement custom options for processing of characteristic (Read/Write restrictions, factory mode values and etc).
 const mb_parameter_descriptor_t device_parameters[] = {
     // { CID, Param Name, Units, Modbus Slave Addr, Modbus Reg Type, Reg Start, Reg Size, Instance Offset, Data Type, Data Size, Parameter Options, Access Mode}
-    { CID_HOLD_DATA_0, STR("Humidity_1"), STR("%rH"), MB_DEVICE_ADDR1, MB_PARAM_HOLDING, 0, 2,
-            HOLD_OFFSET(holding_data0), PARAM_TYPE_U16, 2, OPTS( 0, 1000, 1 ), PAR_PERMS_READ_WRITE_TRIGGER }
+    { CID_HOLD_TEMPERATURE, STR("Temperature"), STR("C"), MB_DEVICE_ADDR, MB_PARAM_HOLDING, 0, 1,
+            HOLD_OFFSET(temperature), PARAM_TYPE_U16, 2, OPTS( 0, 1000, 1 ), PAR_PERMS_READ_WRITE_TRIGGER },
+    { CID_HOLD_HUMIDITY, STR("Humidity"), STR("%RH"), MB_DEVICE_ADDR, MB_PARAM_HOLDING, 1, 1,
+            HOLD_OFFSET(humidity), PARAM_TYPE_U16, 2, OPTS( 0, 1000, 1 ), PAR_PERMS_READ_WRITE_TRIGGER },
+    { CID_HOLD_PRESSURE, STR("Pressure"), STR("hPa"), MB_DEVICE_ADDR, MB_PARAM_HOLDING, 2, 1,
+            HOLD_OFFSET(pressure), PARAM_TYPE_U16, 2, OPTS( 0, 100000, 1 ), PAR_PERMS_READ_WRITE_TRIGGER },
+    { CID_HOLD_ILLUMINANCE, STR("Illuminance"), STR("%FS"), MB_DEVICE_ADDR, MB_PARAM_HOLDING, 3, 1,
+            HOLD_OFFSET(illuminance), PARAM_TYPE_U16, 2, OPTS( 0, 100000, 1 ), PAR_PERMS_READ_WRITE_TRIGGER }
 };
 
 // Calculate number of parameters in the table
@@ -178,13 +184,12 @@ static void master_operation_func(void *arg)
                     if (err == ESP_OK) {
                         if ((param_descriptor->mb_param_type == MB_PARAM_HOLDING) ||
                             (param_descriptor->mb_param_type == MB_PARAM_INPUT)) {
-                            value = *(uint16_t*)temp_data_ptr;
-                            ESP_LOGI(TAG, "Characteristic #%u %s (%s) value = %f (0x%" PRIx16 ") read successful.",
+                            value = *(uint32_t*)temp_data_ptr;
+                            ESP_LOGI(TAG, "Characteristic #%u %s (%s) value = %f read successful.",
                                             param_descriptor->cid,
                                             param_descriptor->param_key,
                                             param_descriptor->param_units,
-                                            value,
-                                            *(uint16_t*)temp_data_ptr);
+                                            value);
                             if (((value > param_descriptor->param_opts.max) ||
                                 (value < param_descriptor->param_opts.min))) {
                                     alarm_state = true;
